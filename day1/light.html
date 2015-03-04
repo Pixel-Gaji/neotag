@@ -121,16 +121,16 @@ var UIView = (function() {
   return UIView;
 })();
 
-data = [
+var data = [
   {name: "電球1", turning: "on"},
   {name: "電球2", turning: "off"},
   {name: "電球3", turning: "on"}
 ];
 
-lightsView = new LightsView(data);
+var lightsView = new LightsView(data);
 lightsView.render();
 
-uiView = new UIView({targetView: lightsView});
+var uiView = new UIView({targetView: lightsView});
 uiView.render();
 
 </script>
