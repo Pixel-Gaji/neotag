@@ -1,0 +1,137 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>js 勉強会 初日 - ライト</title>
+<body>
+<script>
+var Light = (function() {
+  function Light(opt) {
+    this.name = opt.name;
+    this.turning = opt.turning;
+  }
+  Light.prototype.isTurnOn = function() {
+    // do something
+  }
+
+  Light.prototype.turn = function(bool) {
+    if (bool) {
+      this.turning = "on";
+    } else {
+      this.turning = "off";
+    }
+  }
+  Light.prototype.toggle = function() {
+    console.log (this.turning)
+    if (this.turning === "off") {
+      this.turning = "on";
+    } else {
+      this.turning = "off";
+    }
+  }
+
+  return Light;
+})();
+
+var Lights = (function() {
+  function Lights(opt) {
+    this.entries = opt.map(function(data){
+      return new Light(data)
+    })
+  }
+  Lights.prototype.turnAll = function(bool) {
+    this.entries.forEach(function(light){
+      light.turn(bool);
+    });
+  }
+
+  return Lights;
+})();
+
+// Model View
+var LightView = (function() {
+  function LightView(opt) {
+    var _this = this;
+    this.model = opt.model;
+    this.el = document.createElement('li');
+
+    this.el.addEventListener('click', function(ev){
+      _this.model.toggle();
+      _this.render();
+    });
+
+  }
+  LightView.prototype.render = function() {
+    this.el.textContent = this.model.name + ': ' + this.model.turning
+
+    return this.el
+    // do something
+  }
+
+  return LightView;
+})();
+
+// Collection View
+var LightsView = (function() {
+  function LightsView(opt) {
+    this.collection = new Lights(opt);
+    this.el = document.createElement('ul')
+  }
+  LightsView.prototype.render = function() {
+    var _this = this;
+    this.lightViews = this.collection.entries.map(function(light){
+      var lightView = new LightView({model: light});
+      var lightEl = lightView.render();
+      _this.el.appendChild(lightEl);
+      return lightView;
+    })
+    document.body.appendChild(this.el);
+    // do something
+  }
+  LightsView.prototype.turnAll = function(bool) {
+    var _this = this;
+    this.collection.turnAll(bool);
+    this.lightViews.forEach(function(lightView){
+      lightView.render();
+    })
+  }
+
+  return LightsView;
+})();
+
+// UI View
+var UIView = (function() {
+  function UIView(opt) {
+    this.targetView = opt.targetView;
+    this.el = document.createElement('div')
+  }
+
+  UIView.prototype.render = function(bool) {
+    var _this = this;
+    var btnAllOff = document.createElement('button');
+    btnAllOff.textContent = '全部Off!!';
+
+    btnAllOff.addEventListener('click', function(ev){
+      console.log(_this.targetView.collection);
+      _this.targetView.turnAll(false);
+    })
+
+    this.el.appendChild(btnAllOff);
+    document.body.appendChild(this.el);
+  }
+
+  return UIView;
+})();
+
+var data = [
+  {name: "電球1", turning: "on"},
+  {name: "電球2", turning: "off"},
+  {name: "電球3", turning: "on"}
+];
+
+var lightsView = new LightsView(data);
+lightsView.render();
+
+var uiView = new UIView({targetView: lightsView});
+uiView.render();
+
+</script>
+
