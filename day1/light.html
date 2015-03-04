@@ -1,0 +1,61 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>js 勉強会 初日 - ライト</title>
+<script>
+var Light = (function() {
+  function Light(opt) {
+    this.turnOn = opt.turnOn;
+  }
+  Light.prototype.isTurnOn = function() {
+    // do something
+  }
+
+  return Light;
+})();
+
+var Lights = (function() {
+  function Lights(opt) {
+    this.collection = opt.data;
+  }
+  Light.prototype.turnAll = function(bool) {
+    // do something
+  }
+
+  return Lights;
+})();
+
+// Model View
+var LightView = (function() {
+  function LightView(opt) {
+    this.model = opt.model;
+  }
+  LightView.prototype.render = function(bool) {
+    // do something
+  }
+
+  return LightView;
+})();
+
+// Collection View
+var LightsView = (function() {
+  function LightsView(opt) {
+    this.collection = new Lights(opt);
+  }
+  LightsView.prototype.render = function(bool) {
+    // do something
+  }
+
+  return LightsView;
+})();
+
+data = [
+  {name: "電球1", turning: "on"},
+  {name: "電球2", turning: "off"},
+  {name: "電球3", turning: "on"}
+];
+
+lightsView = new LightsView(data);
+lightsView.render()
+
+</script>
+
