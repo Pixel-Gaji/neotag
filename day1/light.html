@@ -19,6 +19,14 @@ var Light = (function() {
       this.turning = "off";
     }
   }
+  Light.prototype.toggle = function() {
+    console.log (this.turning)
+    if (this.turning === "off") {
+      this.turning = "on";
+    } else {
+      this.turning = "off";
+    }
+  }
 
   return Light;
 })();
@@ -41,11 +49,19 @@ var Lights = (function() {
 // Model View
 var LightView = (function() {
   function LightView(opt) {
+    var _this = this;
     this.model = opt.model;
     this.el = document.createElement('li');
+
+    this.el.addEventListener('click', function(ev){
+      _this.model.toggle();
+      _this.render();
+    });
+
   }
   LightView.prototype.render = function() {
     this.el.textContent = this.model.name + ': ' + this.model.turning
+
     return this.el
     // do something
   }
